@@ -1,0 +1,51 @@
+server:
+  listen: ":8443"
+  # TLS is required for production. Omit for local development only.
+  # tls:
+  #   cert: /path/to/cert.pem
+  #   key: /path/to/key.pem
+
+auth:
+  users:
+    - username: admin
+      # Generate with: htpasswd -nbBC 10 "" 'yourpassword' | cut -d: -f2
+      password_hash: "$2a$10$EXAMPLE_HASH_REPLACE_ME"
+  session:
+    # Random 32+ byte hex string for HMAC signing. Generate with: openssl rand -hex 32
+    secret: "REPLACE_ME_WITH_RANDOM_HEX"
+    max_age: 86400  # 24 hours in seconds
+
+ssh:
+  use_agent: false
+  known_hosts: "~/.ssh/known_hosts"
+
+bastion:
+  host: "bastion.example.com:22"
+  user: "jump_user"
+  private_key: "~/.ssh/bastion_key"
+  known_hosts: "~/.ssh/known_hosts"
+  keepalive: 30        # seconds between keepalive probes
+  max_sessions: 8      # channels per SSH connection before opening a new one
+
+targets:
+  - name: "dev-server"
+    host: "10.0.1.10:22"
+    user: "deploy"
+    private_key: "~/.ssh/target_key"
+    # host_key_fingerprint: "SHA256:..."  # optional pin
+    terminal:
+      enabled: true
+      default_session: "main"
+    desktop:
+      enabled: true
+      vnc_port: 5901
+
+  - name: "gpu-box"
+    host: "10.0.1.20:22"
+    user: "researcher"
+    private_key: "~/.ssh/target_key"
+    terminal:
+      enabled: true
+      default_session: "train"
+    desktop:
+      enabled: false
