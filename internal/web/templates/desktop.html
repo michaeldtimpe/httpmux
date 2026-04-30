@@ -1,0 +1,21 @@
+{{template "layout" .}}
+{{define "title"}}httpmux - {{.Target.Name}} Desktop{{end}}
+{{define "head"}}
+<style>
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #1a1b26; }
+    #vnc-container { width: 100%; height: 100vh; }
+    .conn-status { position: fixed; top: 8px; right: 8px; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: monospace; z-index: 100; }
+    .conn-status.connected { background: #1a3a1a; color: #4ade80; }
+    .conn-status.disconnected { background: #3a1a1a; color: #f87171; }
+</style>
+{{end}}
+{{define "body"}}
+<div id="conn-status" class="conn-status disconnected">connecting...</div>
+<div id="vnc-container"></div>
+{{end}}
+{{define "scripts"}}
+<script>
+    window.HTTPMUX_TARGET = "{{.Target.Name}}";
+</script>
+<script type="module" src="/static/js/desktop.js"></script>
+{{end}}
