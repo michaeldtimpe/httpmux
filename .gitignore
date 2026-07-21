@@ -7,3 +7,4 @@ httpmux.yaml
 *_key.pub
 known_hosts
 .DS_Store
+.claude/snapctx/
